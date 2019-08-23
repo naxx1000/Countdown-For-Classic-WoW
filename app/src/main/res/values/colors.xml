@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App theme colors -->
+    <color name="colorPrimary">#a335ee</color>
+    <color name="colorPrimaryDark">#a335ee</color>
+    <color name="colorAccent">#1eff00</color>
+    <color name="backgroundColor">#37374B</color>
+    <color name="black">#000000</color>
+
+    <!-- Text rarity colors -->
+    <color name="poorQuality">#9d9d9d</color>
+    <color name="commonQuality">#ffffff</color>
+    <color name="uncommonQuality">#1eff00</color>
+    <color name="rareQuality">#0070dd</color>
+    <color name="epicQuality">#a335ee</color>
+    <color name="legendaryQuality">#ff8000</color>
+    <color name="heirloom_token">#00ccff</color>
+    <color name="item_comment">#fbcf00</color>
+
+    <!-- Item view colors -->
+    <color name="itemBackgroundDark">#CB1E1E20</color>
+    <color name="borderDark">#585858</color>
+    <color name="borderLight">#9C9C9C</color>
+
+    <!-- Cooldown view colors -->
+    <color name="cooldownShade">#A8000000</color>
+
+</resources>

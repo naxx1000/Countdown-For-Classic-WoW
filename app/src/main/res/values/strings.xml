@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ClassicCountdown</string>
+    <dimen name="item_image_size">220dp</dimen>
+</resources>
