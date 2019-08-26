@@ -1,12 +1,16 @@
 package com.rakiwow.classiccountdown
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,27 +26,22 @@ class MainActivity : AppCompatActivity() {
     var viewIsCreated: Boolean = false
     lateinit var ctx: Context
 
-    var randomlyChosenStartDate = 1566429035979L//1566021497896L
-    var releaseDate = Date(1566856800000)
-    var date = Date()
-    var millisTillClassic: Long = 0
-    var timeTillClassic: Date = Date()
-
-    var seconds: Int = 0
-    var minutes: Int = 0
-    var hours: Int = 0
-    var days: Int = 0
+    //Handles all the time left of a cooldown
+    val timeManager: TimeManager = TimeManager()
 
     var percentBetweenStartAndRelease: Float = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        println(Date().time)
         ctx = this
 
-        //Sets the text for the item description below the hourglass
-        changeItemDescriptionText()
+        if(Build.VERSION.SDK_INT >= 23){
+            if(checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 101)
+            }
+        }
 
         //TODO make landscape layout
         //TODO Add comments
@@ -80,50 +79,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateTime() {
-        date = Date() //TODO is instantiating Date() every second avoidable?
-        millisTillClassic = releaseDate.time - date.time
-        timeTillClassic = Date(millisTillClassic)
-
-        //Get the date in days, hours, minutes and seconds
-        seconds = ((millisTillClassic / 1000) % 60).toInt()
-        minutes = ((millisTillClassic / (1000 * 60)) % 60).toInt()
-        hours = ((millisTillClassic / (1000 * 60 * 60)) % 24).toInt()
-        days = ((millisTillClassic / (1000 * 60 * 60 * 24) % 24)).toInt()
+        //Update the timemanager to current time
+        timeManager.updateNow()
 
         //Updates the days, hours, minutes and seconds left on top of the item view.
-        changeDaysLeftText()
+        runOnUiThread {
+            changeDaysLeftText()
+        }
 
         //Calculate percentage of time left to get the value for the cooldown arc
-        percentBetweenStartAndRelease =
-            ((date.time - randomlyChosenStartDate).toFloat() / (releaseDate.time - randomlyChosenStartDate)) * 360
-        cooldownView._arc = percentBetweenStartAndRelease
+        cooldownView._arc = timeManager.getPercentageTillRelease()
+
         runOnUiThread {
             cooldownView.invalidate()
         }
     }
 
     private fun changeDaysLeftText() {
-        val daysLeftString = "$days days\n$hours hrs\n$minutes m\n$seconds"
-        runOnUiThread {
-            daysLeftTextView.text = daysLeftString
+        var daysLeftString: String
+        if(timeManager.getPercentageTillRelease() < 360){
+            daysLeftTextView.textSize = 38f
+            daysLeftString = "${timeManager.getDays()} days\n${timeManager.getHours()} hrs\n${timeManager.getMinutes()} m\n${timeManager.getSeconds()}"
+        }else{
+            daysLeftTextView.textSize = 18f
+            daysLeftString = "What are you\nstill doing here?\n\nGo play\nWorld of Warcraft!"
         }
-    }
-
-    private fun changeItemDescriptionText() {
-        val countdownString =
-            "<font color='${ContextCompat.getColor(
-                this,
-                R.color.epicQuality
-            )}'>" + //Change font color
-                    "Classic Hourglass</font><br>" + //The title of the item
-                    "Soulbound<br>Unique<br>Trinket<br>" +
-                    "<font color='${ContextCompat.getColor(this, R.color.uncommonQuality)}'>" +
-                    "Use: Allows you to relive your past.</font><br>" +
-                    "<font color='${ContextCompat.getColor(this, R.color.item_comment)}'>" +
-                    "\"Property of Nozdormu\"</font>"
-        dateTimeText.setText(
-            HtmlCompat.fromHtml(countdownString, HtmlCompat.FROM_HTML_MODE_LEGACY),
-            TextView.BufferType.SPANNABLE
-        )
+        daysLeftTextView.text = daysLeftString
     }
 }

@@ -1,4 +1,24 @@
 <resources>
     <string name="app_name">ClassicCountdown</string>
     <dimen name="item_image_size">220dp</dimen>
+    <string name="appwidget_text">Countdown to Classic</string>
+    <string name="add_widget">Add widget</string>
+    <string-array name="text_sizes">
+        <item>14</item>
+        <item>16</item>
+        <item>20</item>
+        <item>24</item>
+        <item>28</item>
+        <item>32</item>
+        <item>36</item>
+        <item>40</item>
+        <item>44</item>
+        <item>48</item>
+        <item>52</item>
+        <item>56</item>
+        <item>60</item>
+        <item>68</item>
+        <item>76</item>
+        <item>82</item>
+    </string-array>
 </resources>

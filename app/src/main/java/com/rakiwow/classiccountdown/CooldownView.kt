@@ -9,10 +9,10 @@ import androidx.core.content.ContextCompat
 
 class CooldownView @JvmOverloads constructor(
     context: Context,
-    _left: Float,
-    _right: Float,
-    _top: Float,
-    _bottom: Float,
+    var _left: Float,
+    var _right: Float,
+    var _top: Float,
+    var _bottom: Float,
     var _arc: Float,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -28,10 +28,13 @@ class CooldownView @JvmOverloads constructor(
     private val rectF2: RectF = RectF(_left - 400f, _top - 400f, _right + 400f, _bottom + 400f)
 
     override fun onDraw(canvas: Canvas) {
-        paint.color = ContextCompat.getColor(context, R.color.cooldownShade)
+        if(_arc < 360){
+            paint.color = ContextCompat.getColor(context, R.color.cooldownShade)
+            paint.isAntiAlias = true
 
-        canvas.clipRect(rectF1)
-        canvas.drawArc(rectF2, 270f, -360 + _arc, true, paint)
+            canvas.clipRect(rectF1)
+            canvas.drawArc(rectF2, 270f, -360 + _arc, true, paint)
+        }
 
         super.onDraw(canvas)
     }

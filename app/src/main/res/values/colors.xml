@@ -4,7 +4,7 @@
     <color name="colorPrimary">#a335ee</color>
     <color name="colorPrimaryDark">#a335ee</color>
     <color name="colorAccent">#1eff00</color>
-    <color name="backgroundColor">#37374B</color>
+    <color name="backgroundColor">#34373C</color>
     <color name="black">#000000</color>
 
     <!-- Text rarity colors -->
@@ -24,5 +24,6 @@
 
     <!-- Cooldown view colors -->
     <color name="cooldownShade">#A8000000</color>
+    <color name="foregroundShade">#60000000</color>
 
 </resources>
