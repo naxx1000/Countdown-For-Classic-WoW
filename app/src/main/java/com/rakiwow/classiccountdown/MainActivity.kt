@@ -1,20 +1,10 @@
 package com.rakiwow.classiccountdown
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Html
-import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.TextView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
 
@@ -34,17 +24,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        println(Date().time)
         ctx = this
 
-        if(Build.VERSION.SDK_INT >= 23){
-            if(checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 101)
-            }
-        }
-
         //TODO make landscape layout
-        //TODO Add comments
     }
 
     override fun onResume() {
@@ -90,12 +72,14 @@ class MainActivity : AppCompatActivity() {
         //Calculate percentage of time left to get the value for the cooldown arc
         cooldownView._arc = timeManager.getPercentageTillRelease()
 
+        //Change UI on UI thread
         runOnUiThread {
             cooldownView.invalidate()
         }
     }
 
     private fun changeDaysLeftText() {
+        //Change text depending on if game/phase is released or not
         var daysLeftString: String
         if(timeManager.getPercentageTillRelease() < 360){
             daysLeftTextView.textSize = 38f

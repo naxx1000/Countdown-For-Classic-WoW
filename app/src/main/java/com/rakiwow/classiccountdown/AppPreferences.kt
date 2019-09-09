@@ -5,7 +5,8 @@ import android.content.Context
 val PREF_NAME = "preference"
 val PREF_WIDGET_ID = "widgetId"
 
-class MyPreference(context: Context){
+//Object for updating and retrieving id of widget or widgets
+class AppPreferences(context: Context){
 
     val preference = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 

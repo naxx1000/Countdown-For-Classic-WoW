@@ -9,10 +9,10 @@ import androidx.core.content.ContextCompat
 
 class CooldownView @JvmOverloads constructor(
     context: Context,
-    var _left: Float,
-    var _right: Float,
-    var _top: Float,
-    var _bottom: Float,
+    _left: Float,
+    _right: Float,
+    _top: Float,
+    _bottom: Float,
     var _arc: Float,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -25,7 +25,9 @@ class CooldownView @JvmOverloads constructor(
         _left + dpToPxValue * 6, _top + dpToPxValue * 6, _right - dpToPxValue * 6,
         _bottom - dpToPxValue * 6
     )
-    
+
+    //The size of the arc. The size is 800 pixels wider and higher so that the arc fits inside the
+    // clipping rectangle.
     private val rectF2: RectF = RectF(_left - 400f, _top - 400f, _right + 400f, _bottom + 400f)
 
     override fun onDraw(canvas: Canvas) {
