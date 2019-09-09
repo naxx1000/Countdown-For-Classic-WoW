@@ -18,6 +18,7 @@ class CooldownView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
+    //Get the screen dp to px ratio    
     private val dpToPxValue: Float = Resources.getSystem().displayMetrics.scaledDensity
     private val paint: Paint = Paint()
     private val rectF1: RectF = RectF(
@@ -31,8 +32,9 @@ class CooldownView @JvmOverloads constructor(
         if(_arc < 360){
             paint.color = ContextCompat.getColor(context, R.color.cooldownShade)
             paint.isAntiAlias = true
-
+            //Use a rect to clip the arc to look like a square
             canvas.clipRect(rectF1)
+            //Draw an arc that creates the same effect as cooldown graphics in World of Warcraft            
             canvas.drawArc(rectF2, 270f, -360 + _arc, true, paint)
         }
 
