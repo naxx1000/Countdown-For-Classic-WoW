@@ -7,8 +7,7 @@ class TimeManager{
     //Start date so the 'percentageTillRelease' function has reference to create a cooldown arc
     val randomlyChosenStartDate = 1566429035979L
     //The release date of Classic WoW
-    val releaseDate = Date(1568158838647)
-    //val releaseDate = Date(1566856800000)
+    val releaseDate = Date(1566856800000)
     var now = Date()
     var millisTillClassic = releaseDate.time - now.time
 
