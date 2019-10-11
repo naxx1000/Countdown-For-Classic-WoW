@@ -30,7 +30,7 @@
             android:left="6dp"
             android:right="6dp"
             android:top="6dp">
-        <bitmap android:src="@drawable/hourglass4"
+        <bitmap android:src="@drawable/phase2p2"
         />
     </item>
 </layer-list>

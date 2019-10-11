@@ -5,9 +5,9 @@ import java.util.*
 class TimeManager{
 
     //Start date so the 'percentageTillRelease' function has reference to create a cooldown arc
-    val randomlyChosenStartDate = 1566429035979L
-    //The release date of Classic WoW
-    val releaseDate = Date(1566856800000)
+    val randomlyChosenStartDate = 1570747597590L
+    //The release date of Dire Maul (UTC) https://www.unixtimestamp.com/index.php
+    val releaseDate = Date(1571115600000L)
     var now = Date()
     var millisTillClassic = releaseDate.time - now.time
 

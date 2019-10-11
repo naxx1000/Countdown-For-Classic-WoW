@@ -87,7 +87,7 @@ class CountdownWidget : AppWidgetProvider() {
                 //Draw the cooldown arc with text in front of it.
                 val bitmapArc = drawArc(context, timeManager.getPercentageTillRelease())
                 val bitmapText = drawTimeLeft(context, timeManager.getDays().toString(), timeManager.getHours().toString(),
-                    (timeManager.getMinutes() + 1).toString())
+                    timeManager.getMinutes().toString())
                 views.setImageViewBitmap(R.id.image_view_bitmap_cooldown, bitmapArc)
                 views.setImageViewBitmap(R.id.image_view_bitmap_text, bitmapText)
                 views.setOnClickPendingIntent(R.id.widget_image_view, pendingIntent)

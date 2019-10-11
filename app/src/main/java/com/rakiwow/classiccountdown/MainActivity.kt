@@ -1,16 +1,20 @@
 package com.rakiwow.classiccountdown
 
 import android.content.Context
+import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewTreeObserver
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import java.util.concurrent.*
 import kotlin.concurrent.scheduleAtFixedRate
 
 class MainActivity : AppCompatActivity() {
 
     val timer: Timer = Timer()
+    val scheduledService: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
+    lateinit var updateHandle: ScheduledFuture<*>
 
     lateinit var cooldownView: CooldownView
     var viewIsCreated: Boolean = false
@@ -39,25 +43,33 @@ class MainActivity : AppCompatActivity() {
                 if(!viewIsCreated){
                     // Create a cooldown view with same dimensions as the itemImageView
                     cooldownView = CooldownView(
-                        ctx, 0f, itemImageView.width.toFloat(),
-                        0f, itemImageView.height.toFloat(), percentBetweenStartAndRelease
+                        ctx, 0f, itemImageView.measuredWidth.toFloat(),
+                        0f, itemImageView.measuredHeight.toFloat(), percentBetweenStartAndRelease
                     )
                     main_layout.addView(cooldownView) // Add the view to the main constraint layout.
 
                     viewIsCreated = true
                 }
-                cooldownView.y = itemImageView.y // Set position of the view to match the
-                cooldownView.x = itemImageView.x // itemImageView.
 
-                //Starts the timer running code every second
-                timer.scheduleAtFixedRate(0, 1000) {
+                // Use ScheduledExecutorService, start it with scheduleAtFixedRate and cancel in onPause
+                //https://stackoverflow.com/a/10347233/11878095
+                val updater = Runnable {
                     updateTime()
+                    cooldownView.y = itemImageView.y // Set position of the view to match the
+                    cooldownView.x = itemImageView.x // itemImageView.
                 }
+
+                updateHandle = scheduledService.scheduleAtFixedRate(updater, 0, 1000, TimeUnit.MILLISECONDS)
 
                 itemImageView.viewTreeObserver.removeOnPreDrawListener(this)
                 return true
             }
         })
+    }
+
+    override fun onPause() {
+        updateHandle.cancel(true)
+        super.onPause()
     }
 
     private fun updateTime() {
@@ -86,7 +98,7 @@ class MainActivity : AppCompatActivity() {
             daysLeftString = "${timeManager.getDays()} days\n${timeManager.getHours()} hrs\n${timeManager.getMinutes()} m\n${timeManager.getSeconds()}"
         }else{
             daysLeftTextView.textSize = 18f
-            daysLeftString = "What are you\nstill doing here?\n\nGo play\nWorld of Warcraft!"
+            daysLeftString = "Dire Maul\nhas released!"
         }
         daysLeftTextView.text = daysLeftString
     }
