@@ -1,18 +1,15 @@
 package com.rakiwow.classiccountdown
 
 import android.content.Context
-import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewTreeObserver
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import java.util.concurrent.*
-import kotlin.concurrent.scheduleAtFixedRate
 
 class MainActivity : AppCompatActivity() {
 
-    val timer: Timer = Timer()
     val scheduledService: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     lateinit var updateHandle: ScheduledFuture<*>
 
@@ -52,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 // Use ScheduledExecutorService, start it with scheduleAtFixedRate and cancel in onPause
-                //https://stackoverflow.com/a/10347233/11878095
+                // https://stackoverflow.com/a/10347233/11878095
                 val updater = Runnable {
                     updateTime()
                     cooldownView.y = itemImageView.y // Set position of the view to match the
